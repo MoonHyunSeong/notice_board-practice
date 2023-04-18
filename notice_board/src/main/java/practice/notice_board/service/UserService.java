@@ -13,8 +13,15 @@ public class UserService {
 
     private final UserDao userDao;
 
-    public User userCheck(String userId, String password) {
-        userDao.
+    public User userLogin(String userId, String password) {
+        User userByUserId = userDao.getUserByUserId(userId);
+
+        if (userByUserId == null || !userByUserId.getPassword().equals(password)) {
+            return null;
+        } else {
+            return userByUserId;
+        }
+
     }
 
 }
