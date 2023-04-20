@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import practice.notice_board.domain.User;
+import practice.notice_board.dto.UserDto;
 import practice.notice_board.dto.userLogInDto;
 import practice.notice_board.service.UserService;
 
@@ -22,19 +23,22 @@ public class UserController {
 
     @GetMapping("/login")
     public String logInPage() {
-        return "user/logIn";
+        return "user/login";
     }
 
     @PostMapping("/login")
     public String userLogIn(@ModelAttribute userLogInDto logInUser, HttpSession session, Model model) {
-        User result = userService.userLogin(logInUser.getUserId(), logInUser.getPassword());
+        UserDto<User> result = userService.userLogin(logInUser.getUserId(), logInUser.getPassword());
 
-        if (result != null) {
-            session.setAttribute("user", result);
-            return "redirect:/welcomePage";
-        } else {
-            model.addAttribute("loginError", "잘못된 로그인 정보입니다.");
-            return "user/logIn";
+        if (result.getStatusCode() == 1) { // 로그인 성공
+            session.setAttribute("user", result.getData());
+            return "welcomePage";
+        } else if (result.getStatusCode() == 2) { // 비밀번호가 틀렸을 때
+            model.addAttribute("loginError", "비밀번호가 틀렸습니다.");
+            return "user/login";
+        } else { // 등록된 아이디가 아닐 때 statusCode == 3
+            model.addAttribute("loginError", "등록되지 않은 아이디입니다.");
+            return "redirect:/login";
         }
     }
 

@@ -17,10 +17,13 @@ public class User {
     public User() {
     }
 
-    public User(String id, String username, String userId, String password) {
+    public User(String id, String username, String userId, String password, String tel, String email, String address) {
         this.id = id;
         this.username = username;
         this.userId = userId;
         this.password = password;
+        this.tel = tel;
+        this.email = email;
+        this.address = address;
     }
 }

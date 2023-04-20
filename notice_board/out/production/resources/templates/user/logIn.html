@@ -10,6 +10,7 @@
             <legend>LogIn</legend>
             <label for="userId">ID : </label>
             <input type="text" name="userId" id="userId" size="15">
+            <!--<span th:if="${param.loginError}">참입니다.</span>-->
             <br>
             <label for="password">PassWord : </label>
             <input type="password" name="password" id="password" size="15">
@@ -17,5 +18,12 @@
             <button type="submit">LogIn</button>
         </fieldset>
     </form>
+    <div th:if="${param.loginError}">
+        <script th:inline="javascript">
+            if ('[[${param.loginError}]]' !== '') {
+                alert([[${param.loginError}]]);
+            }
+        </script>
+    </div>
 </body>
 </html>
