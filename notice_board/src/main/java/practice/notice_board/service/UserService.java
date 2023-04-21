@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import practice.notice_board.dao.UserDao;
 import practice.notice_board.domain.User;
 import practice.notice_board.dto.UserDto;
+import practice.notice_board.dto.UserJoinDto;
 
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -26,5 +28,21 @@ public class UserService {
             return new UserDto<>(1, userByUserId.get()); // 로그인 성공
         }
     }
+
+    public boolean checkDuplication(String userId) {
+        Optional<User> result = userDao.getUserByUserId(userId);
+
+        if (result.isEmpty()) {
+            return true; // 중복 ID x
+        } else {
+            return false; // 중복 ID o
+        }
+    }
+
+    public void userJoin(UserJoinDto newUser){
+        UUID userUUID = UUID.randomUUID();
+        userDao.userJoin(newUser, String.valueOf(userUUID));
+    }
+
 
 }

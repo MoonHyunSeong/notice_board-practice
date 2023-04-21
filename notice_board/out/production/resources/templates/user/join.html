@@ -2,17 +2,62 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Join</title>
 </head>
+
+<script>
+
+    $('#duplicationCheck').click(function() {
+        // 입력된 아이디 값 가져오기
+        var userId = $('#userId').val();
+        // Ajax 요청 보내기
+        $.ajax({
+            url: '/check-duplication',
+            method: 'GET',
+            data: {
+                userId: userId
+            },
+            success: function(result) {
+                // 중복 여부에 따라 결과 처리하기
+                if (result) {
+                    alert('중복된 아이디입니다.');
+                } else {
+                    alert('사용 가능한 아이디입니다.');
+                }
+            },
+            error: function() {
+                alert('서버 오류가 발생했습니다.');
+            }
+        });
+    });
+
+
+
+</script>
+
 <body>
     <form action="join" method="post">
         <fieldset id="join">
             <legend>Join</legend>
+            <label for="username">이   름 : </label>
+            <input type="text" name="username" id="username" size="15" required>
+            <br>
             <label for="userId">ID : </label>
-            <input type="text" name="userId" id="userId" size="15">
+            <input type="text" name="userId" id="userId" size="15" required>
+            <button type="button" id="duplicationCheck">중복체크</button>
             <br>
             <label for="password">PassWord : </label>
-            <input type="password" name="password" id="password" size="15">
+            <input type="text" name="password" id="password" size="15" required>
+            <br>
+            <label for="tel">tel : </label>
+            <input type="text" name="tel" id="tel" size="15">
+            <br>
+            <label for="email">email : </label>
+            <input type="email" name="email" id="email" size="15">
+            <br>
+            <label for="address">address : </label>
+            <input type="text" name="address" id="address" size="15">
             <br>
 
             <button type="submit">Join</button>

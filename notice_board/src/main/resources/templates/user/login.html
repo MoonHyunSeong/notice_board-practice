@@ -5,6 +5,9 @@
     <title>LogIn</title>
 </head>
 <body>
+    <div>
+        <span th:name="loginError" th:text="${loginError}"></span>
+    </div>
     <form action="login" method="post">
         <fieldset id="login">
             <legend>LogIn</legend>
@@ -17,14 +20,8 @@
             <br>
             <button type="submit">LogIn</button>
         </fieldset>
-        <div th:if="${param.loginError}">
-            <script th:inline="javascript">
-                if ('[[${param.loginError}]]' !== '') {
-                    alert("hi");
-                }
-            </script>
-        </div>
     </form>
+
 
 </body>
 </html>
