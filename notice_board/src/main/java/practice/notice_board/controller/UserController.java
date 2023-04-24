@@ -13,6 +13,9 @@ import practice.notice_board.dto.UserJoinDto;
 import practice.notice_board.dto.UserLogInDto;
 import practice.notice_board.service.UserService;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
@@ -52,14 +55,19 @@ public class UserController {
     /**
      * 중복체크 일단 두자.
      * @param userId
-     * @param model
      * @return
      */
-    @GetMapping("/check-duplication")
-    public String checkDuplication(@RequestParam("userId") String userId, Model model) {
+    @PostMapping("/check-duplicate")
+    @ResponseBody
+    public Map<String, Object> checkDuplication(@RequestParam("userId") String userId) {
         log.info("duplicate in");
-        model.addAttribute("result", userService.checkDuplication(userId));
-        return "user/join";
+        Map<String, Object> result = new HashMap<>();
+
+        boolean isDuplicate = userService.checkDuplication(userId);
+
+        result.put("isDuplicate", isDuplicate);
+
+        return result;
     }
 
 

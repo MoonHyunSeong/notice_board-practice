@@ -8,27 +8,27 @@
 
 <script>
 
-    $('#duplicationCheck').click(function() {
-        // 입력된 아이디 값 가져오기
-        var userId = $('#userId').val();
-        // Ajax 요청 보내기
-        $.ajax({
-            url: '/check-duplication',
-            method: 'GET',
-            data: {
-                userId: userId
-            },
-            success: function(result) {
-                // 중복 여부에 따라 결과 처리하기
-                if (result) {
-                    alert('중복된 아이디입니다.');
-                } else {
-                    alert('사용 가능한 아이디입니다.');
+    $(document).ready(function() {
+        $('#duplicate-check').on('click', function() {
+            let userId = $('#userId').val(); // 중복 체크할 아이디 가져오기
+            $.ajax({
+                url: '/check-duplicate', // 요청 보낼 url
+                type: 'POST', // POST 방식으로 요청 보내기
+                data: { 'userId': userId }, // 요청 body에 userId 전달
+                success: function(response) { // 요청이 성공하면 실행될 함수
+                    // console.log(response.isDuplicate)
+                    if (!response.isDuplicate) { // 이렇게 뽑아와야한다.
+                        alert('중복된 아이디입니다.');
+                        //$('#join button[type=submit]').prop('disabled', true); // Join 버튼 비활성화
+                    } else {
+                        alert('사용 가능한 아이디입니다.');
+                        $('#join button[type=submit]').prop('disabled', false); // Join 버튼 활성화
+                    }
+                },
+                error: function() { // 요청이 실패하면 실행될 함수
+                    alert('요청이 실패하였습니다.');
                 }
-            },
-            error: function() {
-                alert('서버 오류가 발생했습니다.');
-            }
+            });
         });
     });
 
@@ -45,7 +45,7 @@
             <br>
             <label for="userId">ID : </label>
             <input type="text" name="userId" id="userId" size="15" required>
-            <button type="button" id="duplicationCheck">중복체크</button>
+            <button type="button" id="duplicate-check">중복체크</button>
             <br>
             <label for="password">PassWord : </label>
             <input type="text" name="password" id="password" size="15" required>
@@ -60,7 +60,7 @@
             <input type="text" name="address" id="address" size="15">
             <br>
 
-            <button type="submit">Join</button>
+            <button type="submit" disabled>Join</button>
         </fieldset>
     </form>
 </body>

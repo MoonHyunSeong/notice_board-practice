@@ -10,12 +10,15 @@
 
     <div>
         대충 헤더가 될 부분
-        <button>
-            <a href="http://localhost:8080/login">LogIn</a>
+        <button type="button"
+                th:onclick="|location.href='@{/login}'|">
+            로그인
         </button>
-        <button>
-            <a href="http://localhost:8080/join">Join</a>
+        <button type="button"
+                th:onclick="|location.href='@{/join}'|">
+            회원가입
         </button>
+
     </div>
 
 </body>
