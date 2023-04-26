@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class UserDto<T> {
+public class MemberDto<T> {
 
     /**
      * 1 = ok
@@ -15,10 +15,10 @@ public class UserDto<T> {
     private int statusCode;
     private T data;
 
-    public UserDto() {
+    public MemberDto() {
     }
 
-    public UserDto(int statusCode, T data) {
+    public MemberDto(int statusCode, T data) {
         this.statusCode = statusCode;
         this.data = data;
     }

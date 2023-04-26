@@ -4,7 +4,7 @@ package practice.notice_board.domain;
 import lombok.Getter;
 
 @Getter
-public class User {
+public class Member {
 
     private String id;
     private String username;
@@ -14,10 +14,10 @@ public class User {
     private String email;
     private String address;
 
-    public User() {
+    public Member() {
     }
 
-    public User(String id, String username, String userId, String password, String tel, String email, String address) {
+    public Member(String id, String username, String userId, String password, String tel, String email, String address) {
         this.id = id;
         this.username = username;
         this.userId = userId;

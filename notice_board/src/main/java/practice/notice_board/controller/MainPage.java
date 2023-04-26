@@ -14,13 +14,7 @@ public class MainPage {
     @GetMapping("/")
     public String mainPage(HttpServletRequest request) {
 
-        HttpSession session = request.getSession();
-        if (session == null) {
-            return "세션이 없습니다.";
-        } else {
-            log.info("sessionID = {} ", session.getId());
-            return "welcomePage";
-        }
+        return "welcomePage";
 
 //        return "welcomePage";
     }

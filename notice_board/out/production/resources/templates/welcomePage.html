@@ -2,23 +2,44 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>MoonWare</title>
+    <title>WelcomePage</title>
 
 </head>
-<body>
-    <h1>welcome</h1>
 
-    <div>
+<script>
+
+
+
+</script>
+
+<body>
+    <header th:if="${session.loginMember != null}">
+        <h1 th:text="${session.loginMember} + '님 환영합니다.'"></h1>
+    </header>
+
+
+    <div id="non-login" th:if="${session.loginMember == null}">
         대충 헤더가 될 부분
         <button type="button"
                 th:onclick="|location.href='@{/login}'|">
             로그인
         </button>
         <button type="button"
-                th:onclick="|location.href='@{/join}'|">
+                th:onclick="|location.href='@{/member/add}'|">
             회원가입
         </button>
+    </div>
 
+    <div id="login" th:if="${session.loginMember != null}">
+        대충 헤더가 될 부분
+        <button type="button"
+                th:onclick="|location.href='@{/login}'|">
+            마이페이지
+        </button>
+        <button type="submit"
+                th:onclick="|location.href='@{/logout}'|" >
+            로그아웃
+        </button>
     </div>
 
 </body>
