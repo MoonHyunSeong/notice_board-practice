@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class MainPage {
 
     @GetMapping("/")
-    public String mainPage(HttpServletRequest request) {
-
+    public String mainPage() {
         return "welcomePage";
 
 //        return "welcomePage";

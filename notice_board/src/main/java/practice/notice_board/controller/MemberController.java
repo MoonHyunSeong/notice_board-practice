@@ -67,7 +67,44 @@ public class MemberController {
         return "redirect:/";
     }
 
-    @GetMapping("/session-info")
+    @PostMapping("/check-duplicate")
+    @ResponseBody
+    public Map<String, Object> checkDuplication(@RequestParam("userId") String userId) {
+        log.info("duplicate in");
+        Map<String, Object> result = new HashMap<>();
+
+        boolean isDuplicate = memberService.checkDuplication(userId);
+
+        result.put("isDuplicate", isDuplicate);
+
+        return result;
+    }
+
+    @GetMapping("/member/add")
+    public String joinPage() {
+        return "member/join";
+    }
+
+    @PostMapping("/member/add")
+    public String userJoin(@ModelAttribute MemberJoinDto newUser) {
+
+        log.info("join : {}", "Join start");
+        memberService.userJoin(newUser);
+
+        return "member/login";
+        //return "welcomePage";
+    }
+
+
+
+
+
+
+
+
+
+
+    /*@GetMapping("/session-info")
     public String sessionInfo(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -84,43 +121,6 @@ public class MemberController {
                 Date(session.getLastAccessedTime()));
         log.info("isNew={}", session.isNew());
         return "welcomePage";
-    }
-
-
-
-
-    /**
-     * 중복체크 일단 두자.
-     * @param userId
-     * @return
-     */
-    @PostMapping("/check-duplicate")
-    @ResponseBody
-    public Map<String, Object> checkDuplication(@RequestParam("userId") String userId) {
-        log.info("duplicate in");
-        Map<String, Object> result = new HashMap<>();
-
-        boolean isDuplicate = memberService.checkDuplication(userId);
-
-        result.put("isDuplicate", isDuplicate);
-
-        return result;
-    }
-
-
-    @GetMapping("/member/add")
-    public String joinPage() {
-        return "member/join";
-    }
-
-    @PostMapping("/member/add")
-    public String userJoin(@ModelAttribute MemberJoinDto newUser) {
-
-        log.info("join : {}", "Join start");
-        memberService.userJoin(newUser);
-
-        return "member/login";
-        //return "welcomePage";
-    }
+    }*/
 
 }
