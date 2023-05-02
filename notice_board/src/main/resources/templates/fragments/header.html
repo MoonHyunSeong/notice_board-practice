@@ -4,65 +4,56 @@
     <meta charset="UTF-8">
     <title>WelcomePage</title>
 
+    <!-- 부트스트랩 CSS 파일 추가 -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 
-<script>
-
-
-
-</script>
 
 <body>
 
-    <header id="main-header">
-        <div id="home-header" style="display: flex">
-            <div id="home" >
-                <a href="/">
-                    <img th:src="@{/images/home_icon.svg}" alt="home button">
-                </a>
+<header id="main-header">
+    <div id="home-header" class="d-flex justify-content-between align-items-center">
+        <div id="home" >
+            <a href="/">
+                <img th:src="@{/images/home_icon.svg}" alt="home button">
+            </a>
+        </div>
+        <div id="main Title" class="text-center">
+            <h2 th:if="${session.loginMember == null}">이럇샤이마세</h2>
+            <h2 th:unless="${session.loginMember == null}" th:text="${session.loginMember} + '님 환영합니다.'"></h2>
+        </div>
+        <div id="user-buttons" class="d-flex justify-content-end">
+            <div id="non-login" th:if="${session.loginMember == null}">
+                <button type="button" class="btn btn-primary mr-2"
+                        th:onclick="|location.href='@{/login}'|">
+                    로그인
+                </button>
+                <button type="button" class="btn btn-secondary"
+                        th:onclick="|location.href='@{/member/add}'|">
+                    회원가입
+                </button>
             </div>
-            <div id="main Title">
-                <h2 th:if="${session.loginMember == null}">이럇샤이마세</h2>
-                <h2 th:unless="${session.loginMember == null}" th:text="${session.loginMember} + '님 환영합니다.'"></h2>
-            </div>
-            <div id="user-buttons">
-                <div id="non-login" th:if="${session.loginMember == null}">
-                    <button type="button"
-                            th:onclick="|location.href='@{/login}'|">
-                        로그인
-                    </button>
-                    <button type="button"
-                            th:onclick="|location.href='@{/member/add}'|">
-                        회원가입
-                    </button>
-                </div>
 
-                <div id="login" th:if="${session.loginMember != null}">
-                    <button type="button"
-                            th:onclick="|location.href='@{/members/mypage}'|">
-                        마이페이지
-                    </button>
-                    <button type="submit"
-                            th:onclick="|location.href='@{/logout}'|" >
-                        로그아웃
-                    </button>
-                </div>
+            <div id="login" th:if="${session.loginMember != null}">
+                <button type="button" class="btn btn-primary mr-2"
+                        th:onclick="|location.href='@{/members/mypage}'|">
+                    마이페이지
+                </button>
+                <button type="submit" class="btn btn-secondary"
+                        th:onclick="|location.href='@{/logout}'|" >
+                    로그아웃
+                </button>
             </div>
         </div>
-        <nav id="category">
-            <button> A </button>
-            <button> B </button>
-            <button> C </button>
-        </nav>
-    </header>
-
-
-    <!--<header th:if="${session.loginMember != null}">
-        <h1 th:text="${session.loginMember} + '님 환영합니다.'"></h1>
-    </header>
+    </div>
+    <nav id="category" class="d-flex justify-content-left mt-3">
+        <button class="btn btn-outline-primary mx-2"> A </button>
+        <button class="btn btn-outline-primary mx-2"> B </button>
+        <button class="btn btn-outline-primary mx-2"> C </button>
+    </nav>
+</header>
 
 
 
--->
 </body>
 </html>

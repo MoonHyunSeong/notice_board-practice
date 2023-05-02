@@ -91,7 +91,7 @@ public class MemberController {
         log.info("join : {}", "Join start");
         memberService.userJoin(newUser);
 
-        return "member/login";
+        return "redirect:/login";
         //return "welcomePage";
     }
 
