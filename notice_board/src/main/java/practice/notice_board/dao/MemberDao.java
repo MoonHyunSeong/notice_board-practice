@@ -71,4 +71,17 @@ public class MemberDao {
             e.printStackTrace();
         }
     }
+
+    public void userDelete(String userId) {
+        String sql = "DELETE FROM Member WHERE userId = ?";
+
+        try {
+            jdbcTemplate.update(sql, userId);
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+        }
+
+
+
+    }
 }

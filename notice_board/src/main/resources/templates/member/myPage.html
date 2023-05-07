@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>MyPage</title>
+</head>
+<body>
+    <button type="submit" class="btn btn-secondary"
+            th:onclick="|location.href='@{/member/removeMember}'|" >
+        회원탈퇴
+    </button>
+</body>
+</html>

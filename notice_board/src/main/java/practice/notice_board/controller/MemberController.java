@@ -45,6 +45,7 @@ public class MemberController {
         if (result.getStatusCode() == 1) { // 로그인 성공
             HttpSession session = request.getSession();
             session.setAttribute("loginMember", result.getData().getUsername());
+            session.setAttribute("loginMemberId", result.getData().getUserId());
             log.info("login? {}", result.getData().getUsername());
             return "redirect:/";
         } else if (result.getStatusCode() == 2) { // 비밀번호가 틀렸을 때
@@ -61,11 +62,50 @@ public class MemberController {
     @GetMapping("/logout")
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
+        log.info("now member id ? = {} ", session.getAttribute("loginMemberId"));
         if (session != null) {
             session.invalidate();
         }
         return "redirect:/";
     }
+
+    @GetMapping("/member/myPage")
+    public String getMyPage() {
+        return "member/myPage";
+    }
+
+    @GetMapping("/member/removeMember")
+    public String removeMember(HttpServletRequest request) {
+
+        HttpSession session = request.getSession(false);
+        log.info("now member id ? = {} ", session.getAttribute("loginMemberId"));
+
+
+        memberService.removeUser((String) session.getAttribute("loginMemberId"));
+        if (session != null) {
+            session.invalidate();
+        }
+
+
+        return "redirect:/";
+    }
+
+
+    @GetMapping("/member/add")
+    public String joinPage() {
+        return "member/join";
+    }
+
+    @PostMapping("/member/add")
+    public String userJoin(@ModelAttribute MemberJoinDto newUser) {
+
+        log.info("join : {}", "Join start");
+        memberService.userJoin(newUser);
+
+        return "redirect: /login";
+        //return "welcomePage";
+    }
+
 
     @PostMapping("/check-duplicate")
     @ResponseBody
@@ -79,27 +119,6 @@ public class MemberController {
 
         return result;
     }
-
-    @GetMapping("/member/add")
-    public String joinPage() {
-        return "member/join";
-    }
-
-    @PostMapping("/member/add")
-    public String userJoin(@ModelAttribute MemberJoinDto newUser) {
-
-        log.info("join : {}", "Join start");
-        memberService.userJoin(newUser);
-
-        return "redirect:/login";
-        //return "welcomePage";
-    }
-
-
-
-
-
-
 
 
 

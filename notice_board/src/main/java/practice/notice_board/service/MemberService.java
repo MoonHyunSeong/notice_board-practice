@@ -47,5 +47,8 @@ public class MemberService {
         memberDao.userJoin(newUser, String.valueOf(userUUID));
     }
 
+    public void removeUser(String userId) {
+        memberDao.userDelete(userId);
 
+    }
 }
