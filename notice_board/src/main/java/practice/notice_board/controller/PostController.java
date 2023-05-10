@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class NoticeController {
+public class PostController {
 
-    @GetMapping("/notice")
+    @GetMapping("/post")
     public String noticeBoard() {
-        return "notice/notice";
+        return "board/post";
     }
 }

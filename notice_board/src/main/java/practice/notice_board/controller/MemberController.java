@@ -44,8 +44,8 @@ public class MemberController {
 
         if (result.getStatusCode() == 1) { // 로그인 성공
             HttpSession session = request.getSession();
-            session.setAttribute("loginMember", result.getData().getUsername());
-            session.setAttribute("loginMemberId", result.getData().getUserId());
+            session.setAttribute("loginUserName", result.getData().getUsername());
+            session.setAttribute("loginUserId", result.getData().getUserId());
             log.info("login? {}", result.getData().getUsername());
             return "redirect:/";
         } else if (result.getStatusCode() == 2) { // 비밀번호가 틀렸을 때
@@ -102,7 +102,7 @@ public class MemberController {
         log.info("join : {}", "Join start");
         memberService.userJoin(newUser);
 
-        return "redirect: /login";
+        return "redirect:/login";
         //return "welcomePage";
     }
 

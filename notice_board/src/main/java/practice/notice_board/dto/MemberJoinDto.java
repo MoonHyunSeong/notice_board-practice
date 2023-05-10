@@ -12,5 +12,4 @@ public class MemberJoinDto {
     private String password;
     private String tel;
     private String email;
-    private String address;
 }

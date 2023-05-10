@@ -41,8 +41,9 @@ public class MemberDao {
         String sql = "SELECT * FROM member";
 
         RowMapper<Member> rowMapper = memberMapping();
+        List<Member> result = jdbcTemplate.query(sql, rowMapper);
 
-        return jdbcTemplate.query(sql, rowMapper);
+        return result;
     }
 
     private RowMapper<Member> memberMapping() {
@@ -53,20 +54,19 @@ public class MemberDao {
             String password = rs.getString("password");
             String tel = rs.getString("tel");
             String email = rs.getString("email");
-            String address = rs.getString("address");
-            return new Member(id, username, userId, password, tel, email, address);
+            return new Member(id, username, userId, password, tel, email);
         };
         return rowMapper;
     }
 
 
     public void userJoin(MemberJoinDto memberJoinDto, String userUUID) {
-        String sql = "INSERT INTO member (id, username, userid, password, tel, email, address)" +
-                " VALUES(?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO member (id, username, userid, password, tel, email)" +
+                " VALUES(?,?,?,?,?,?)";
 
         try {
             jdbcTemplate.update(sql, userUUID, memberJoinDto.getUsername(), memberJoinDto.getUserId(), memberJoinDto.getPassword(),
-                    memberJoinDto.getTel(), memberJoinDto.getEmail(), memberJoinDto.getAddress());
+                    memberJoinDto.getTel(), memberJoinDto.getEmail());
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
