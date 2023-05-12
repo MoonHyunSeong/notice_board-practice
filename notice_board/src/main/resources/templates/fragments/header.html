@@ -19,11 +19,11 @@
             </a>
         </div>
         <div id="main Title" class="text-center">
-            <h2 th:if="${session.loginMember == null}">이럇샤이마세</h2>
-            <h2 th:unless="${session.loginMember == null}" th:text="${session.loginMember} + '님 환영합니다.'"></h2>
+            <h2 th:if="${session.loginUserName == null}">이럇샤이마세</h2>
+            <h2 th:unless="${session.loginUserName == null}" th:text="${session.loginUserName} + '님 환영합니다.'"></h2>
         </div>
         <div id="user-buttons" class="d-flex justify-content-end">
-            <div id="non-login" th:if="${session.loginMember == null}">
+            <div id="non-login" th:if="${session.loginUserName == null}">
                 <button type="button" class="btn btn-primary mr-2"
                         th:onclick="|location.href='@{/login}'|">
                     로그인
@@ -34,7 +34,7 @@
                 </button>
             </div>
 
-            <div id="login" th:if="${session.loginMember != null}">
+            <div id="login" th:if="${session.loginUserName != null}">
                 <button type="button" class="btn btn-primary mr-2"
                         th:onclick="|location.href='@{/member/myPage}'|">
                     마이페이지
