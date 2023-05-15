@@ -81,12 +81,13 @@ public class MemberController {
         log.info("now member id ? = {} ", session.getAttribute("loginMemberId"));
 
 
-        memberService.removeUser((String) session.getAttribute("loginMemberId"));
-        if (session != null) {
+        Boolean result = memberService.removeUser((String) session.getAttribute("loginMemberId"));
+        if (session != null && result == true) {
             session.invalidate();
+            //return "redirect:/";
+        } else {
+            // fail msg
         }
-
-
         return "redirect:/";
     }
 
@@ -100,9 +101,14 @@ public class MemberController {
     public String userJoin(@ModelAttribute MemberJoinDto newUser) {
 
         log.info("join : {}", "Join start");
-        memberService.userJoin(newUser);
+        Boolean result = memberService.userJoin(newUser);
+        if (result == true) {
+            return "redirect:/login";
+        } else {
+            // fail msg
+            return "welcomePage";
+        }
 
-        return "redirect:/login";
         //return "welcomePage";
     }
 

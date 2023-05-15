@@ -5,7 +5,6 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
-import practice.notice_board.domain.Category;
 import practice.notice_board.domain.Post;
 import practice.notice_board.dto.PostDto;
 
@@ -26,35 +25,40 @@ public class PostDao {
     /**
      * 게시글 생성
      */
-    public void createPost(PostDto postdto, String memberId, int categoryId) {
-        String sql = "INSERT INTO post(title, content, create_date, member_id, category_id) VALUES(?, ?, ?, ?, ?)";
+    public Boolean createPost(PostDto postdto, String memberId, int categoryId) {
+        String sql = "INSERT INTO post(title, content, create_date, member_id, category_id) VALUES(?, ?, CURRENT_TIMESTAMP(), ?, ?)";
 
         try {
-            jdbcTemplate.update(sql, postdto.getTitle(), postdto.getContent(), postdto.getCreateDate(),
+            jdbcTemplate.update(sql, postdto.getTitle(), postdto.getContent(),
                     memberId, categoryId);
+
+            return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
     /**
      * 게시글 수정
      */
-    public void updatePost(String content, LocalDateTime updateTime) {
-
+    public Boolean updatePost(String content) {
+        return true;
     }
 
     /**
      * 게시글 삭제
      */
-    public void deletePost(String memberId, String postTitle) {
+    public Boolean deletePost(String memberId, String postTitle) {
 
         String sql = "DELETE FROM Post WHERE member_id = ? and title = ?";
 
         try {
             jdbcTemplate.update(sql, memberId, postTitle);
+            return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
+            return false;
         }
     }
 

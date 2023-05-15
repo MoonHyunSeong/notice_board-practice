@@ -60,25 +60,29 @@ public class MemberDao {
     }
 
 
-    public void userJoin(MemberJoinDto memberJoinDto, String userUUID) {
+    public Boolean userJoin(MemberJoinDto memberJoinDto, String userUUID) {
         String sql = "INSERT INTO member (id, username, userid, password, tel, email)" +
                 " VALUES(?,?,?,?,?,?)";
 
         try {
             jdbcTemplate.update(sql, userUUID, memberJoinDto.getUsername(), memberJoinDto.getUserId(), memberJoinDto.getPassword(),
                     memberJoinDto.getTel(), memberJoinDto.getEmail());
+            return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
+            return false;
         }
     }
 
-    public void userDelete(String userId) {
+    public Boolean userDelete(String userId) {
         String sql = "DELETE FROM Member WHERE userId = ?";
 
         try {
             jdbcTemplate.update(sql, userId);
+            return true;
         } catch (DataAccessException e) {
             e.printStackTrace();
+            return false;
         }
 
 

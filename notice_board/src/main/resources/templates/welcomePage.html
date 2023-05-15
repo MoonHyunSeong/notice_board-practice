@@ -7,14 +7,43 @@
 
 </head>
 
+<style>
+
+    .wrapper {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .banner {
+        width: 15%;
+    }
+
+    main{
+        width: 70%;
+    }
+
+
+</style>
+
 <body>
 <body>
 
 
     <div th:replace="~{fragments/header :: header}"></div>
-    <main>
-        여기에 메인컨텐츠가 담길거에요~
-    </main>
+
+    <div class="wrapper">
+        <div class="banner">
+            왼쪽 배너 임마
+        </div>
+
+        <main th:replace="~{fragments/contents :: main}"></main>
+
+        <div class="banner">
+            오른쪽 배너 임마
+        </div>
+    </div>
+
     <div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>

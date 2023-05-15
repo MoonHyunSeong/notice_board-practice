@@ -3,7 +3,9 @@ package practice.notice_board.dao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import practice.notice_board.domain.Category;
 
 import javax.sql.DataSource;
 
@@ -20,16 +22,28 @@ public class CategoryDao {
     /**
      * category ID 가져오기
      */
-    public int getIdByCategoryName(String categoryName) {
+    public Category getCategoryByCategoryName(String categoryName) {
 
-        String sql = "SELECT id FROM CATEGORY WHERE category_name = ?";
+        String sql = "SELECT * FROM CATEGORY WHERE category_name = ?";
+
+        RowMapper<Category> rowMapper = categoryRowMapper();
 
         try {
-            return jdbcTemplate.update(sql, categoryName);
+            Category category = jdbcTemplate.queryForObject(sql, rowMapper, categoryName);
+            return category;
         } catch (DataAccessException e) {
             e.printStackTrace();
         }
 
-        return -1;
+        return null;
+    }
+
+    private RowMapper<Category> categoryRowMapper() {
+        RowMapper<Category> rowMapper = (rs, rowNum) -> {
+            int id = rs.getInt("id");
+            String categoryName = rs.getString("category_name");
+            return new Category(id,categoryName);
+        };
+        return rowMapper;
     }
 }

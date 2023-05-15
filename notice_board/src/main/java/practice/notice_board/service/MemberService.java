@@ -42,13 +42,25 @@ public class MemberService {
         }
     }
 
-    public void userJoin(MemberJoinDto newUser){
+    public Boolean userJoin(MemberJoinDto newUser){
         UUID userUUID = UUID.randomUUID();
-        memberDao.userJoin(newUser, String.valueOf(userUUID));
+        Boolean result = memberDao.userJoin(newUser, String.valueOf(userUUID));
+
+        if (result == true) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void removeUser(String userId) {
-        memberDao.userDelete(userId);
+    public Boolean removeUser(String userId) {
+        Boolean result = memberDao.userDelete(userId);
+
+        if (result == true) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
 }

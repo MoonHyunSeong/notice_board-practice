@@ -5,9 +5,12 @@ import org.springframework.stereotype.Service;
 import practice.notice_board.dao.CategoryDao;
 import practice.notice_board.dao.MemberDao;
 import practice.notice_board.dao.PostDao;
+import practice.notice_board.domain.Category;
 import practice.notice_board.domain.Member;
+import practice.notice_board.domain.Post;
 import practice.notice_board.dto.PostDto;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,17 +21,33 @@ public class PostService {
     private final MemberDao memberDao;
     private final CategoryDao categoryDao;
 
-    public void createPost(PostDto postDto, String userId, String categoryName) {
+    public Boolean createPost(PostDto postDto, String userId, String categoryName) {
+
         Optional<Member> userByUserId = memberDao.getUserByUserId(userId);
-        String memberId = userByUserId.get().getId();
+        Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
 
-        int categoryId = categoryDao.getIdByCategoryName(categoryName);
 
-        if (userByUserId.isPresent() || (categoryId == -1)) {
-            //fail
+        if (userByUserId.isPresent() && getCategory != null) {
+            String memberId = userByUserId.get().getId();
+            int categoryId = getCategory.getId();
+
+            Boolean result = postDao.createPost(postDto, memberId, categoryId);
+            if (result == true) {
+                return true;
+            } else {
+                return false;
+            }
         } else {
-            postDao.createPost(postDto, memberId, categoryId);
+            return false;
         }
+    }
+
+    public List<Post> getPostByCategory(String categoryName) {
+        Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
+        int categoryId = getCategory.getId();
+
+        List<Post> allPostByCategory = postDao.getAllPostByCategory(categoryId);
+        return allPostByCategory;
     }
 
 
