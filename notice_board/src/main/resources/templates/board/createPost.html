@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1 th:text="${categoryName}"></h1>
+<form action="/board/createPost" method="post">
+    <input type="hidden" name="categoryName" th:value="${categoryName}" />
+    <button type="submit">저장하기</button>
+</form>
+</body>
+</html>
