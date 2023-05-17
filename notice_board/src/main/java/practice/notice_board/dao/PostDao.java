@@ -2,6 +2,7 @@ package practice.notice_board.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
@@ -29,10 +30,14 @@ public class PostDao {
         String sql = "INSERT INTO post(title, content, create_date, member_id, category_id) VALUES(?, ?, CURRENT_TIMESTAMP(), ?, ?)";
 
         try {
-            jdbcTemplate.update(sql, postdto.getTitle(), postdto.getContent(),
-                    memberId, categoryId);
+            int affectedRows = jdbcTemplate.update(sql, postdto.getTitle(), postdto.getContent(), memberId, categoryId);
 
-            return true;
+            System.out.println("affectedRows = " + affectedRows);
+
+            return affectedRows > 0;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
         } catch (DataAccessException e) {
             e.printStackTrace();
             return false;

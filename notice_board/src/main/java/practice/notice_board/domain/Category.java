@@ -1,8 +1,10 @@
 package practice.notice_board.domain;
 
 import lombok.Getter;
+import lombok.ToString;
 
 @Getter
+@ToString
 public class Category {
     private int id;
     private String categoryName;

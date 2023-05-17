@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import practice.notice_board.domain.Post;
 import practice.notice_board.dto.PostDto;
 import practice.notice_board.service.PostService;
@@ -46,21 +47,31 @@ public class PostController {
 
     @PostMapping("/board/createPost")
     public String createPost(@ModelAttribute PostDto newPost, HttpServletRequest request
-            , @RequestParam("categoryName") String categoryName) {
+            , RedirectAttributes redirectAttributes) {
 
-        System.out.println("categoryName = " + categoryName);
+        String categoryName = newPost.getCategoryName();
 
         HttpSession session = request.getSession(false);
         String loginMemberId = (String) session.getAttribute("loginUserId");
 
-        log.info("post : {} MemberId : {} categoryName : {}",
-                newPost, loginMemberId, categoryName);
+
         Boolean result = postService.createPost(newPost, loginMemberId, categoryName);
+        // result
         if (result == true) {
-            return "redirect:/board/post";
+            // 리다이렉트에 변수주려면 이렇게 쓰면 된다.
+            redirectAttributes.addAttribute("categoryName", categoryName);
+            return "redirect:/board/{categoryName}";
         } else {
             return "/welcomePage";
         }
+    }
+
+    @GetMapping("/board/recentPosts/{categoryName}")
+    @ResponseBody
+    public List<Post> getPostsByCategory(@PathVariable String categoryName) {
+        List<Post> postByCategory = postService.getPostByCategory(categoryName);
+
+        return postByCategory;
     }
 
     /**

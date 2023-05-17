@@ -1,6 +1,7 @@
 package practice.notice_board.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import practice.notice_board.dao.CategoryDao;
 import practice.notice_board.dao.MemberDao;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PostService {
 
     private final PostDao postDao;
@@ -26,6 +28,8 @@ public class PostService {
         Optional<Member> userByUserId = memberDao.getUserByUserId(userId);
         Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
 
+        log.info("post : {} MemberId : {} categoryName : {}",
+                postDto.toString(), userId, getCategory.getId());
 
         if (userByUserId.isPresent() && getCategory != null) {
             String memberId = userByUserId.get().getId();

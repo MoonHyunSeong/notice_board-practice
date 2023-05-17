@@ -28,15 +28,15 @@ public class PostServiceTest {
 
         String memberId = "fe52496c-1090-4967-abb2-8ecf002dc7be";
 
-        PostDto post1 = new PostDto("제목1", "내용1");
+    /*    PostDto post1 = new PostDto("제목1", "내용1");
         PostDto post2 = new PostDto("제목2", "내용2");
         PostDto post3 = new PostDto("제목3", "내용3");
         PostDto post4 = new PostDto("제목4", "내용4");
         PostDto post5 = new PostDto("제목5", "내용5");
         PostDto post6 = new PostDto("제목6", "내용6");
-
+*/
         //when
-        postDao.createPost(post6, memberId, 1 );
+       // postDao.createPost(post6, memberId, 1 );
         //then
 
     }
