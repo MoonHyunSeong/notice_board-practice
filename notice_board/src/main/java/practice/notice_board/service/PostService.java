@@ -28,8 +28,8 @@ public class PostService {
         Optional<Member> userByUserId = memberDao.getUserByUserId(userId);
         Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
 
-        log.info("post : {} MemberId : {} categoryName : {}",
-                postDto.toString(), userId, getCategory.getId());
+        /*log.info("post : {} MemberId : {} categoryName : {}",
+                postDto.toString(), userId, getCategory.getId());*/
 
         if (userByUserId.isPresent() && getCategory != null) {
             String memberId = userByUserId.get().getId();
@@ -46,7 +46,12 @@ public class PostService {
         }
     }
 
-    public List<Post> getPostByCategory(String categoryName) {
+    /**
+     * post 전부 가져오기.
+     * @param categoryName
+     * @return
+     */
+    public List<Post> getAllPostByCategory(String categoryName) {
         Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
         int categoryId = getCategory.getId();
 
@@ -54,6 +59,16 @@ public class PostService {
         return allPostByCategory;
     }
 
+    /**
+     * 게시물 5개만 가져오기
+     */
+    public List<Post> getPostByCategoryFive(String categoryName) {
+        Category getCategory = categoryDao.getCategoryByCategoryName(categoryName);
+        int categoryId = getCategory.getId();
+
+        List<Post> PostByCategoryFive = postDao.getPostByCategoryIdFiveCount(categoryId);
+        return PostByCategoryFive;
+    }
 
 
 }

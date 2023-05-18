@@ -24,18 +24,20 @@ public class PostController {
     @GetMapping("/board/{categoryName}")
     public String noticeBoard(@PathVariable String categoryName, Model model) {
 
-        System.out.println("categoryName = " + categoryName);
-        List<Post> postByCategory = postService.getPostByCategory(categoryName);
-
-        for (Post post : postByCategory) {
-            System.out.println("post = " + post.toString());
-        }
-
         model.addAttribute("categoryName", categoryName);
-
 
         return "/board/post";
     }
+
+    @GetMapping("/board/all/{categoryName}")
+    @ResponseBody
+    public List<Post> noticeBoard(@PathVariable String categoryName) {
+
+        List<Post> postByCategory = postService.getAllPostByCategory(categoryName);
+
+        return postByCategory;
+    }
+
 
     @GetMapping("/board/createPost")
     public String createPostView(@RequestParam String categoryName, Model model) {
@@ -69,7 +71,7 @@ public class PostController {
     @GetMapping("/board/recentPosts/{categoryName}")
     @ResponseBody
     public List<Post> getPostsByCategory(@PathVariable String categoryName) {
-        List<Post> postByCategory = postService.getPostByCategory(categoryName);
+        List<Post> postByCategory = postService.getPostByCategoryFive(categoryName);
 
         return postByCategory;
     }

@@ -30,7 +30,6 @@ public class CategoryDao {
 
         try {
             Category category = jdbcTemplate.queryForObject(sql, rowMapper, categoryName);
-            System.out.println("category = " + category.toString());
             return category;
         } catch (DataAccessException e) {
             e.printStackTrace();

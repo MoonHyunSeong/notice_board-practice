@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>Join</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
 <script>
@@ -22,7 +24,7 @@
                         //$('#join button[type=submit]').prop('disabled', true); // Join 버튼 비활성화
                     } else {
                         alert('사용 가능한 아이디입니다.');
-                        $('#join button[type=submit]').prop('disabled', false); // Join 버튼 활성화
+                        $('button[type=submit]').prop('disabled', false); // Join 버튼 활성화
                     }
                 },
                 error: function() { // 요청이 실패하면 실행될 함수
@@ -37,28 +39,42 @@
 </script>
 
 <body>
-    <form action="add" method="post">
-        <fieldset id="join">
-            <legend>Join</legend>
-            <label for="username">이   름 : </label>
-            <input type="text" name="username" id="username" size="15" required>
-            <br>
-            <label for="userId">ID : </label>
-            <input type="text" name="userId" id="userId" size="15" required>
-            <button type="button" id="duplicate-check">중복체크</button>
-            <br>
-            <label for="password">PassWord : </label>
-            <input type="password" name="password" id="password" size="15" required>
-            <br>
-            <label for="tel">tel : </label>
-            <input type="text" name="tel" id="tel" size="15">
-            <br>
-            <label for="email">email : </label>
-            <input type="email" name="email" id="email" size="15">
-            <br>
-
-            <button type="submit" disabled>Join</button>
-        </fieldset>
-    </form>
+<div class="container">
+    <div class="row justify-content-center mt-5">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title mb-4">Join</h5>
+                    <form action="add" method="post">
+                        <div class="mb-3">
+                            <label for="username" class="form-label">이름:</label>
+                            <input type="text" name="username" id="username" class="form-control" size="15" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="userId" class="form-label">ID:</label>
+                            <div class="input-group">
+                                <input type="text" name="userId" id="userId" class="form-control" size="15" required>
+                                <button type="button" id="duplicate-check" class="btn btn-primary">중복체크</button>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label">Password:</label>
+                            <input type="password" name="password" id="password" class="form-control" size="15" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tel" class="form-label">tel:</label>
+                            <input type="text" name="tel" id="tel" class="form-control" size="15">
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">email:</label>
+                            <input type="email" name="email" id="email" class="form-control" size="15">
+                        </div>
+                        <button type="submit" class="btn btn-primary" disabled>Join</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

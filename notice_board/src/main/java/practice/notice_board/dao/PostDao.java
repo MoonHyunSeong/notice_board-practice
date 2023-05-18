@@ -79,6 +79,17 @@ public class PostDao {
      * 제목에 따른 게시글 찾아오기.
      */
 
+    /**
+     * 메인페이지용 5개 긁어오기
+     */
+    public List<Post> getPostByCategoryIdFiveCount(int categoryId) {
+        String sql = "SELECT * FROM post WHERE category_id = ? ORDER BY create_date DESC LIMIT 5";
+        RowMapper<Post> rowMapper = postMapping();
+        List<Post> result = jdbcTemplate.query(sql, rowMapper, categoryId);
+
+        return result;
+    }
+
 
     /**
      * 카테고리 클릭 시 해당 페이지로 이동해서 모든 글들 가져오게 하려고 만듬.
