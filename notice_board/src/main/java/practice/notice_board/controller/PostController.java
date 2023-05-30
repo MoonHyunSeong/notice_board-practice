@@ -8,7 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import practice.notice_board.domain.Comment;
 import practice.notice_board.domain.Post;
+import practice.notice_board.dto.CommentDto;
 import practice.notice_board.dto.PostDto;
 import practice.notice_board.service.PostService;
 
@@ -26,7 +28,7 @@ public class PostController {
 
         model.addAttribute("categoryName", categoryName);
 
-        return "/board/post";
+        return "/board/posts";
     }
 
     @GetMapping("/board/all/{categoryName}")
@@ -37,6 +39,19 @@ public class PostController {
 
         return postByCategory;
     }
+
+    @GetMapping("/board/post/{postId}")
+    public String getPost(@PathVariable String postId, Model model,
+                          RedirectAttributes redirectAttributes) {
+        Post post = postService.getPostById(postId);
+        model.addAttribute("post", post);
+
+
+        redirectAttributes.addAttribute("id", postId);
+        //temp
+        return "/board/post";
+    }
+
 
 
     @GetMapping("/board/createPost")
@@ -75,6 +90,31 @@ public class PostController {
 
         return postByCategory;
     }
+
+    /**
+     * 댓글 전부 가져오기 ajax이기 때문에 나중에 responsebody 쓰기
+     */
+    @GetMapping("/board/comments/{postId}")
+    @ResponseBody
+    public List<Comment> getAllComments(@PathVariable String postId) {
+        List<Comment> allComments = postService.getAllComments(postId);
+
+        return allComments;
+    }
+
+
+    // 경로 문제 조심하기.
+    @PostMapping("/board/post/createComment")
+    public String createComment(@ModelAttribute CommentDto comment, RedirectAttributes redirectAttributes) {
+
+        postService.createComment(comment);
+
+        redirectAttributes.addAttribute("postId", comment.getPostId());
+        return "redirect:/board/post/{postId}";
+    }
+
+
+
 
     /**
      * 1. categoryName을 가지고 list를 뽑아와서 모델에 담은 뒤 리턴.

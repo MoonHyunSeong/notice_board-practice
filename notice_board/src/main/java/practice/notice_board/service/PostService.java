@@ -7,8 +7,10 @@ import practice.notice_board.dao.CategoryDao;
 import practice.notice_board.dao.MemberDao;
 import practice.notice_board.dao.PostDao;
 import practice.notice_board.domain.Category;
+import practice.notice_board.domain.Comment;
 import practice.notice_board.domain.Member;
 import practice.notice_board.domain.Post;
+import practice.notice_board.dto.CommentDto;
 import practice.notice_board.dto.PostDto;
 
 import java.util.List;
@@ -70,5 +72,22 @@ public class PostService {
         return PostByCategoryFive;
     }
 
+    public Post getPostById(String postId) {
+        Post getPost = postDao.getPostById(postId);
+        return getPost;
+    }
+
+   public Boolean createComment(CommentDto comment) {
+
+       Boolean result = postDao.createComment(comment);
+       return result;
+   }
+
+    public List<Comment> getAllComments(String postId) {
+
+        List<Comment> allComments = postDao.getAllComments(postId);
+
+        return allComments;
+    }
 
 }

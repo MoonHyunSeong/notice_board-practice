@@ -6,7 +6,9 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
+import practice.notice_board.domain.Comment;
 import practice.notice_board.domain.Post;
+import practice.notice_board.dto.CommentDto;
 import practice.notice_board.dto.PostDto;
 
 import javax.sql.DataSource;
@@ -31,8 +33,6 @@ public class PostDao {
 
         try {
             int affectedRows = jdbcTemplate.update(sql, postdto.getTitle(), postdto.getContent(), memberId, categoryId);
-
-            System.out.println("affectedRows = " + affectedRows);
 
             return affectedRows > 0;
         } catch (DataIntegrityViolationException e) {
@@ -76,8 +76,15 @@ public class PostDao {
      */
 
     /**
-     * 제목에 따른 게시글 찾아오기.
+     * id(title)에 따른 게시글 찾아오기.
      */
+    public Post getPostById(String postId) {
+        String sql = "SELECT * FROM post WHERE Id = ?";
+        RowMapper<Post> rowMapper = postMapping();
+        Post result = jdbcTemplate.queryForObject(sql, rowMapper, postId);
+
+        return result;
+    }
 
     /**
      * 메인페이지용 5개 긁어오기
@@ -93,6 +100,7 @@ public class PostDao {
 
     /**
      * 카테고리 클릭 시 해당 페이지로 이동해서 모든 글들 가져오게 하려고 만듬.
+     *
      * @return
      */
     public List<Post> getAllPostByCategory(int categoryId) {
@@ -107,6 +115,7 @@ public class PostDao {
     /**
      * 카테고리 별 게시글 제목 -> 메인페이지용 -> 페이징은 고려 x 조건을 max 5개로 줘야할듯
      * 카테고리도 이름만 가져오자. Map<String(categoryName), List<Post>>
+     *
      * @return
      */
     public Map<String, List<Post>> getAllPost() {
@@ -142,10 +151,40 @@ public class PostDao {
         });
     }
 
+    public Boolean createComment(CommentDto comment) {
+        String sql = "INSERT INTO comment(comment, member_id, post_id) VALUES(?, ?, ?)";
 
+        try {
+            int affectedRows = jdbcTemplate.update(sql, comment.getComment(), comment.getMemberId(), comment.getPostId());
 
+            return affectedRows > 0;
+        } catch (DataIntegrityViolationException e) {
+            e.printStackTrace();
+            return false;
+        } catch (DataAccessException e) {
+            e.printStackTrace();
+            return false;
+        }
 
+    }
 
+    public List<Comment> getAllComments(String getpostId) {
+        String sql = "SELECT * FROM COMMENT WHERE post_id = ?";
+
+        RowMapper<Comment> rowMapper = (rs, rowNum) ->{
+            int id = rs.getInt("id");
+            String comment = rs.getString("comment");
+            String memberId = rs.getString("member_id");
+            int postId = rs.getInt("post_id");
+
+            return new Comment(id, comment, memberId, postId);
+        };
+
+        List<Comment> result = jdbcTemplate.query(sql, rowMapper, getpostId);
+
+        return result;
+
+    }
 
 
     private RowMapper<Post> postMapping() {

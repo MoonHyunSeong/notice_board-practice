@@ -7,38 +7,37 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
         $(document).ready(function() {
-            loadRecentPosts();
+            loadComments();
 
-            function loadRecentPosts() {
-                var category = "[[${categoryName}]]";
+            function loadComments() {
+                var postId = [[${post.id}]];/* 여기에 게시글의 ID 값을 가져오는 방법을 작성하세요 */;
 
-                // $.each(categories, function(index, category) {
                 $.ajax({
-                    url: '/board/all/' + category, // 실제로 데이터를 가져올 URL을 지정해야 합니다.
+                    url: '/board/comments/' + postId, // 실제로 데이터를 가져올 URL을 지정해야 합니다.
                     method: 'GET',
                     dataType: 'json',
                     success: function(response) {
-                        updatePostList(category, response); // 응답을 받아서 해당 카테고리의 게시글 목록을 업데이트합니다.
+                        updateCommentList(response); // 응답을 받아서 댓글 목록을 업데이트합니다.
                     },
                     error: function() {
-                        console.log('Failed to load recent posts for category: ' + category); // 요청이 실패한 경우 에러 메시지를 출력합니다.
+                        console.log('Failed to load comments for post: ' + postId); // 요청이 실패한 경우 에러 메시지를 출력합니다.
                     }
                 });
-                // });
             }
 
-            function updatePostList(category, posts) {
-                var $postList = $('#post-list-' + category); // 동적으로 생성된 ID를 사용하여 요소를 선택합니다.
+            function updateCommentList(comments) {
+                var $commentList = $('#comment-list');
 
-                // 게시글 목록을 비우고 새로운 게시글을 추가합니다.
-                $postList.empty();
-                $.each(posts, function(index, post) {
-                    var $postItem = $('<li>')
-                        .append($('<div>').append($('<a>').attr('href', '/board/post/' + post.id).text(post.title)));
-                    $postList.append($postItem);
+                // 댓글 목록을 비우고 새로운 댓글을 추가합니다.
+                $commentList.empty();
+                $.each(comments, function(index, comment) {
+                    var $commentItem = $('<li>')
+                        .text(comment.comment);
+                    $commentList.append($commentItem);
                 });
             }
         });
+
     </script>
 </head>
 
@@ -46,14 +45,30 @@
 <div th:replace="~{fragments/header :: header}"></div>
 <div class="container mt-5">
     <h1 th:text="${categoryName}"></h1>
-    <button class="btn btn-primary">
-        <a th:href="@{/board/createPost(categoryName=${categoryName})}" class="text-white">글쓰기</a>
-    </button>
     <div>
         <ul th:id="'post-list-' + ${categoryName}" class="list-group">
             <!-- 동적으로 업데이트될 해당 카테고리의 게시글 목록 -->
         </ul>
     </div>
+</div>
+
+<h3 th:text="${post.getTitle()}"></h3>
+<textarea rows="10" cols="50" readonly th:text="${post.getContent()}"></textarea>
+
+<div id="create-comment">
+    <form method="post" action="createComment">
+        <input type="text" name="comment" id="comment" size="100" required>
+        <input type="text" hidden name = "memberId"  id="memberId" th:value="${post.getMemberId()}">
+        <input type="number" hidden name = "postId"  id="postId" th:value="${post.getId()}">
+        <button type="submit">댓글쓰기</button>
+    </form>
+</div>
+
+<!--댓글 리스트 ajax call-->
+<div id="comments">
+    <!-- 어떻게 넣어야 하는가? ul li구조? -->
+    <ul id="comment-list">
+    </ul>
 </div>
 
 <div th:replace="~{fragments/footer :: footer}"></div>

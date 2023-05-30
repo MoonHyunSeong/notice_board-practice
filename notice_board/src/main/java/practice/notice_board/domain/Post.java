@@ -25,7 +25,6 @@ public class Post {
     public Post(String title, String content, int likes,
                 LocalDateTime createDate, LocalDateTime updateDate,
                 String memberId, int categoryId) {
-        this.id = id;
         this.title = title;
         this.content = content;
         this.likes = likes;
